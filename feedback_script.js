@@ -1,7 +1,7 @@
-var questions = [ "How well do you understand this text?",
-                  "How interesting is this text to you?",
-                  "Rewrite this section so that you can understand it better.",
-                  "Rewrite this section to be the most interesting to you."];
+var questions = [ "How well do you UNDERSTAND this text?",
+                  "How INTERESTING is this text to you?",
+                  "Rewrite this section so that you find it EASIER to UNDERSTAND.",
+                  "Rewrite this section to be the MOST INTERESTING to you."];
 
 var response_styles = [ "radio10", "radio10", "text", "text"];
 
@@ -25,9 +25,6 @@ $(document).ready(function(){
 
   //add places for feedback questions
   var sections = document.getElementsByClassName('page_section');
-
-  // $(".page_section").append("<div style='float:right'>TEST</div>");
-
   for (let s=0; s < sections.length; ++s) {
     console.log(sections[s]);
     // sections[s].innerHTML += '<div style="float:right">TEST</div>';
@@ -45,40 +42,39 @@ $(document).ready(function(){
 
   // EVENTS
   // add onClick event to move on to the next question for a form
-  $(document.getElementsByClassName("next")).on('click', function(event) {
+  $('body').on('click', ".next", function (event){
+  // $(document.getElementsByClassName("next")).on('click', function(event) {
     event.preventDefault();
 
     let elt = $(event.target);
     let form_group = elt[0].parentElement;
     let form = form_group.parentElement;
     let form_num = parseInt((form.id).substring(4));
-    let form_parent = form.parentElement
+    // let form_parent = form.parentElement
 
     //update state and show next question
-    let first_thing = arr_forms_state.find((e) => true);
-    console.log(first_thing);
+    let curr_q = arr_forms_state[form_num].indexOf(1);
+    if (curr_q < num_questions_per_section-1) {
+        //update what's shown
+        form.innerHTML =  arr_forms_questions[form_num][curr_q+1];
 
-    for (let i=0; i < num_questions_per_section; ++i) {
-      if (arr_forms_state[form_num][i] === 1) {
-        console.log(arr_forms_state[form_num]);
-        arr_forms_state[form_num][i] = 0;
-        form_parent.innerHTML =  arr_forms_questions[form_num][i+1];
-        arr_forms_state[form_num][i+1] = 1;
-      }
+        //extract text from section on page
+        let curr_section = $(document.getElementsByClassName('page_section'))[form_num];
+        let section_text = curr_section.firstChild;
+
+
+        console.log()
+        //update state machine
+        arr_forms_state[form_num][curr_q] = 0;
+        arr_forms_state[form_num][curr_q + 1] = 1;
+    }
+    else {
+      alert('end!');
+      //show thank you page and disappear
+      finish();
     }
 
-    // console.log(arr_forms_state[form_num][1]);
-
-
-
-
-    // console.log(form);
-
-
-    // console.log(form === elt[0].parentElement.parentElement);
   });
-
-  //TODO: TIMER!!
 });
 
 function showNext(event) {
@@ -90,14 +86,6 @@ function showNext(event) {
 
 
 // HELPER FUNCTIONS
-function resolveAfter2Seconds() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve('resolved');
-    }, 2000);
-  });
-}
-
 function initialize() {
   var sections = document.getElementsByClassName('page_section');
   var arr_sections = Array.from(sections);
@@ -147,12 +135,17 @@ function populateQuestionsArray() {
 function getQuestion(formNum, qNum) {
   // let q_HTML = '<div class="card text-white bg-info mb-3" style="max-width: 25rem;"><div class="card-header">Give us your feedback!</div><div class="card-body">'
 
-  let q_HTML = '<form id=form' + formNum.toString() + '><div class="form-group"><p>' + questions[qNum] + '</p>' + getResponseOptions(qNum) + '</div>';
+  let q_HTML = '<form id=form' + formNum.toString() + '><div class="form-group"><p>' + questions[qNum] + '</p>' + getResponseOptions(formNum, qNum) + '</form></div>';
 
   return q_HTML;
 }
 
-function getResponseOptions(index) {
+function getResponseOptions(formNum, index) {
+
+  let curr_section = $(document.getElementsByClassName('page_section'))[formNum];
+  let section_text = curr_section.firstChild.textContent;
+  // console.log(section_text.textContent);
+
   let response_div ='';
   if (response_styles[index].includes('radio')) {
     response_div += '<div class="btn-group" data-toggle="buttons">';
@@ -163,7 +156,7 @@ function getResponseOptions(index) {
       response_div += '</div><button class="btn btn-small next" type="submit" style="float:right">Next</button>'
   }
   else if (response_styles[index].includes('text')) {
-    response_div += '<textarea class="form-control" rows="3">' + 'SECTION CONTENT' + '</textarea><button class="btn btn-small btn-light btn-success next" onclick="this.classList.toggle(\''+'btn-light'+'\'); return false; ">Next</button>'
+    response_div += '<textarea class="form-control" rows="3">"' + section_text + '"</textarea><button class="btn btn-small btn-light btn-success next" type="submit" style="float:right">Next</button>'
   }
   else {
     response_div += '</div>'
