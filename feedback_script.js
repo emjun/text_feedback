@@ -24,12 +24,7 @@ $(document).ready(function(){
   initialize();
 
   //add places for feedback questions
-  var sections = document.getElementsByClassName('page_section');
-  for (let s=0; s < sections.length; ++s) {
-    console.log(sections[s]);
-    // sections[s].innerHTML += '<div style="float:right">TEST</div>';
-    sections[s].innerHTML += '<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right" id="' + s.toString() + '"><div class="card-header">Give us your feedback!</div><div class="card-body">';
-  }
+  attachFeedbackPlaces();
 
   //show first question
   for (let i=0; i < arr_forms_questions.length; i++) {
@@ -37,7 +32,6 @@ $(document).ready(function(){
     console.log(elt);
     elt.innerHTML += arr_forms_questions[i][0];
     arr_forms_state[i][0] = 1;
-    // console.log(elt);
   }
 
   // EVENTS
@@ -77,10 +71,6 @@ $(document).ready(function(){
   });
 });
 
-function showNext(event) {
-  event.preventDefault()
-  console.log(event)
-}
 //log the data and send it somewhere
 //log which section type it is??
 
@@ -106,20 +96,6 @@ function initialize() {
 
   populateQuestionsArray();
 
-}
-
-function initializeQuestionsArray() {
-  var sections = document.getElementsByClassName('page_section');
-  var arr_sections = Array.from(sections);
-  var num_forms = arr_sections.length;
-
-  for (let r=0; r < num_forms; ++r) {
-    let arr = [];
-    for (let c=0; c < num_questions_per_section; c++) {
-      arr.push(0);
-    }
-    arr_forms_questions.push(arr);
-  }
 }
 
 function populateQuestionsArray() {
@@ -165,64 +141,13 @@ function getResponseOptions(formNum, index) {
   return response_div;
 }
 
-function showQuestion(num) {
-  var form_groups = document.getElementsByClassName("form-group");
-  var arr_form_groups = Array.from(form_groups);
-
-  for (let i=0; i <arr_form_groups.length; ++i) {
-    // show only the first question
-    if (i%num_questions_per_section === 0) {
-      form_groups[i].style.display="block";
-    }
-    else {
-      form_groups[i].style.display="none";
-    }
-    //update state machine
-    arr_forms_state.forEach(function(e){
-      e[0] = 1;
-    })
-
+function attachFeedbackPlaces() {
+  var sections = document.getElementsByClassName('page_section');
+  for (let s=0; s < sections.length; ++s) {
+    console.log(sections[s]);
+    // sections[s].innerHTML += '<div style="float:right">TEST</div>';
+    sections[s].innerHTML += '<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right" id="' + s.toString() + '"><div class="card-header">Give us your feedback!</div><div class="card-body">';
   }
-}
-
-function appendFeedback(section, section_content, i) {
-  var feedbackNode =
-  section.innerHTML += (feedbackNode + populateQuestions("form" + i.toString(), section_content));
-}
-
-function populateQuestions(formId, section_content) {
-  var feedback_div="";
-  let i=0;
-  questions.forEach(function(e){
-      var question_div = '<div class="' + formId + ' form-group"><p>' + e + '</p>' +
-          getResponseOptions(i, section_content, formId) + '</div>'
-      feedback_div += question_div;
-      i++;
-      console.log(i)
-  });
-  return feedback_div;
-}
-
-function orig_getResponseOptions(index, section_content, formNum) {
-  //check if radio buttons are necessary
-  var response_div ='';
-  if (response_styles[index].includes('radio')) {
-    response_div += '<div class="btn-group" data-toggle="buttons">';
-      let numRadios = parseInt(response_styles[index].substring(5));
-      for (let i=0; i < numRadios; ++i) {
-        response_div += '<button class="btn btn-light btn-success" onclick="this.classList.toggle(\''+'btn-light'+'\');">' + i.toString() + '</button>';
-      }
-      response_div += '</div><button class="btn btn-small" type="submit" id="yolo" style="float:right">Next</button>'
-  }
-  else if (response_styles[index].includes('text')) {
-    response_div += '<textarea class="form-control" rows="3">' + section_content + '</textarea><button class="btn btn-small btn-light btn-success" onclick="this.classList.toggle(\''+'btn-light'+'\'); return false; ">Improved!</button>'
-  }
-  else {
-    response_div += '</div>'
-    console.log('ERROR! Not sure what the response type should be for this question.' + questions[index])
-  }
-
-  return response_div;
 }
 
 //// TODO: change to next question (show one at a time); colors for button
