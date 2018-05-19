@@ -1,79 +1,64 @@
 <header>
   <title>Sample study</title>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <!-- <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
   <script src="feedback_script.js"></script>
 
   <style>
-    #toggle {
-    width: 100px;
-    height: 100px;
-    background: #ccc;
-  }
+  .page_section {
+      width:auto;
+      height:auto;
+      /* background:#CCFF33; */
+      padding:10px;
+      position:relative;
+    }
+
+    .card {
+      width:10cm;
+      height:auto;
+      /* background:#CC0000; */
+      /* color:#FFF; */
+      /* padding:50px 2px; */
+      /* height:100%; */
+      text-align:center;
+      top:10;
+      position:absolute;
+      right:0;
+      opacity: 0.90;
+    }
   </style>
 </header>
-<body>
-  <p id="hi">HI</p>
-  <p class="page_section">First section</p>
+<body >
+  <!-- <p id="hi">HI</p>
+  <p class="page_section" onclick="askFeedback()">First section</p>
   <p class="page_section">Second section</p>
   <p class="page_section">Third section</p>
+ -->
 
-  <!-- <div class="card text-white bg-info mb-3" style="max-width: 25rem;">
-    <div class="card-header">Give us your feedback!</div>
-    <div class="card-body">
-      <form>
-        <div class="form-group">
-          <p class="understandingQ">How well do you understand this text?</p>
-          <div class="form-check form-check-inline">
-            <button class="form-check-input" type="radio" name="inlineRadioOptions" id="understanding1" value="1" onclick="console.log('change color')">
-            <label class="form-check-label" for="understanding1">1</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <button class="form-check-input" type="radio" name="inlineRadioOptions" id="understanding2" value="2">
-            <label class="form-check-label" for="understanding2">2</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <button class="form-check-input" type="radio" name="inlineRadioOptions" id="understanding3" value="3">
-            <label class="form-check-label" for="understanding3">3</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <button class="form-check-input" type="radio" name="inlineRadioOptions" id="understanding4" value="4">
-            <label class="form-check-label" for="understanding4">4</label>
-          </div>
-      </form>
-      <p>1. How well do you understand this text?</p>
-      <p>2. How interesting is this text to you?</p>
-      <p>3. Rewrite this section to be most interesting to you. Make sure that this section includes information about XX.</p>
-      <textarea></textarea>
-      SUBMIT NUTON
-      <p>4. Rewrite this section to be most understandable to you.</p>
-      <textarea></textarea> -->
-      <!-- <h5 class="card-title">Info card title</h5> -->
 
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-  </div>
+ <div class="container">
+   <button onclick="askFeedback()">Give feedback</button>
+
+  <div id='acknowledgement'><p>Thank you for participating in the Thinking Style Test!</p></div>
+
+  <!-- // Research Purpose -->
+  <br><div id='research_purpose'><h2 class='bolded-blue'>What is the impact of this research?</h2>
+  <p>Having more fine grained data will help test previous research and inform the development of new theories on culture's impact on thinking style. Findings from this study could also help inform the way that files are organized on a computer and how software menus are designed on websites and other software.</p></div>
+
+  <!-- // Research Background -->
+  <br><div id='research_background'><h2 class='bolded-blue'>What has previous research shown about this topic?</h2>
+  <p class="page_section">Previous research in psychology suggests that cultural background affects the way people think [1]. There are two general ways of thinking: holistic or analytic. People who think holistically tend to group words based on their <emph>holistic function</emph> (i.e., Seagulls fly in the Sky). People who think analytically tend to group words based on <emph>analytic categories</emph> (i.e., Seagulls and Dogs are both animals). Holistic people also tend to group images based on more broadly shared <emph>thematic</emph> features (i.e., sharing a different feature with all other images) whereas analytic people tend to group images based on <emph>specific</emph> features (i.e., sharing one feature with all other images). People from Asia tend to think more holistically while people from Europe tend to think more analytically.</p>
+  <p>[1] Ji, L., Nisbett, R.E., & Zhang, Z. (2005).  Is it culture or is it language:  Examination of language effects in cross-cultural research on categorization.  Journal of Personality and Social Psychology, 87, 57-65.</p></div>
+
+  <!-- // Guiding Research Question or Hypothesis -->
+  <br><div id='research_question'><h2 class='bolded-blue'>Why are we doing this research?</h2>
+  <p>We think that there are finer grained differences between countries that were not possible to detect in the past. Previous research relied on lab studies, which are limited in the demographic diversity of people who participate. Large-scale online experiments are now easier to develop and can reach more diverse people. We hope to find not only how countries differ but also how demographic groups across countries may also be similar or different.</p></div>
+
+  <!-- // Study Summary + Experimental Design -->
+  <br><div id='experimental_design'><h2 class='bolded-blue'>How is the test designed?</h2>
+  <p class="page_section">We measured your thinking style based on your verbal and visual grouping patterns. The activity where you had to pick among three words helps us measure how your language background may affect the way you group concepts presented verbally with words. The other activity where you had to pick the best group for an image measured how you visually categorize objects. By detecting your verbal and visual grouping tendencies, we can have a more complete grasp of the way you represent and categorize concepts in your mind.</p></div>
+
 </div>
-
-<div class="btn-group" data-toggle="buttons">
-  <button class="btn btn-light btn-success" onclick="this.classList.toggle('btn-light'); console.log('next')">Option 1</button>
-  <button class="btn btn-light btn-success" onclick="this.classList.toggle('btn-light')">Option 1</button>
-  <button class="btn btn-light btn-success" onclick="this.classList.toggle('btn-light')">Option 1</button>
-  <button class="btn btn-light btn-success" onclick="this.classList.toggle('btn-light')">Option 1</button>
-  <button class="btn btn-light btn-success" onclick="this.classList.toggle('btn-light')">Option 1</button>
-  <button class="btn btn-light">Option 2</button>
-  <button class="btn btn-light">Option 3</button>
-      <button class="btn btn-light">Option 1</button>
-      <label class="btn btn-primary">
-        <input type="radio" name="options" id="option2"> Option 2
-      </label>
-      <label class="btn btn-primary">
-        <input type="radio" name="options" id="option3"> Option 3
-      </label>
-</div>
-
-
 </body>

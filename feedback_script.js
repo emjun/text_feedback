@@ -1,11 +1,12 @@
-var questions = [ "How well do you UNDERSTAND this text?",
-                  "How INTERESTING is this text to you?",
+var questions = [ "How well do you UNDERSTAND this text? (10 is best)",
                   "Rewrite this section so that you find it EASIER to UNDERSTAND.",
-                  "Rewrite this section to be the MOST INTERESTING to you."];
+                  "How INTERESTING is this text to you? (10 is best)",
+                  "Rewrite this section to be the MOST INTERESTING to you.",
+                  "What questions do you have about this text?"];
 
-var response_styles = [ "radio10", "radio10", "text", "text"];
+var response_styles = [ "radio10", "text", "radio10", "text", "textOpen"];
 
-var num_questions_per_section = 4;
+var num_questions_per_section = questions.length;
 
 
 //SIMPLE STATE MACHINE
@@ -14,11 +15,16 @@ var num_questions_per_section = 4;
 var arr_forms_state = [];
 //2D array containing all questions for all forms
 var arr_forms_questions = [];
+//Object of all the responses to forms for each section
+var responses = {};
 
 
 
 // identify location of mouse then identify location of nearest text div
-$(document).ready(function(){
+// $(document).ready(function(){
+
+function askFeedback() {
+  console.log('hi')
 
   //initialize
   initialize();
@@ -41,39 +47,93 @@ $(document).ready(function(){
     event.preventDefault();
 
     let elt = $(event.target);
-    let form_group = elt[0].parentElement;
-    let form = form_group.parentElement;
-    let form_num = parseInt((form.id).substring(4));
-    // let form_parent = form.parentElement
 
-    //update state and show next question
-    let curr_q = arr_forms_state[form_num].indexOf(1);
-    if (curr_q < num_questions_per_section-1) {
-        //update what's shown
-        form.innerHTML =  arr_forms_questions[form_num][curr_q+1];
+    //check if answering a Likert scale question triggered event
+    if (elt.attr('class').includes('likert')) {
+      //check response value
+      let likert_val = elt[0].value;
+      let likert_group = elt[0].parentElement;
+      let form_group = likert_group.parentElement;
+      let form = form_group.parentElement;
+      let form_num = parseInt((form.id).substring(4));
 
-        //extract text from section on page
-        let curr_section = $(document.getElementsByClassName('page_section'))[form_num];
-        let section_text = curr_section.firstChild;
+      logData();
 
+      let curr_q = arr_forms_state[form_num].indexOf(1);
+      arr_forms_state[form_num][curr_q] = 0;
 
-        console.log()
-        //update state machine
-        arr_forms_state[form_num][curr_q] = 0;
-        arr_forms_state[form_num][curr_q + 1] = 1;
+      if (likert_val <= 7) {
+        //ask Rewrite question
+        let next_q = curr_q+1;
+
+        if (next_q < num_questions_per_section) {
+          //update what's shown
+          form.innerHTML =  arr_forms_questions[form_num][next_q];
+          arr_forms_state[form_num][next_q] = 1;
+        }
+        else {
+          finish();
+        }
+      }
+      else {
+        //skip Rewrite question
+        let next_q = curr_q+2;
+
+        if (next_q < num_questions_per_section) {
+          //update what's shown
+          form.innerHTML =  arr_forms_questions[form_num][next_q];
+          arr_forms_state[form_num][next_q] = 1;
+        }
+        else {
+          finish();
+        }
+      }
     }
+    //it was clicking a next button, after Rewriting a section
     else {
-      alert('end!');
-      //show thank you page and disappear
-      finish();
+      let form_group = elt[0].parentElement;
+      let form = form_group.parentElement;
+      let form_num = parseInt((form.id).substring(4));
+
+      logData();
+
+      let curr_q = arr_forms_state[form_num].indexOf(1);
+      arr_forms_state[form_num][curr_q] = 0;
+
+      let next_q = curr_q+1;
+      if (next_q < num_questions_per_section) {
+        //update what's shown
+        form.innerHTML =  arr_forms_questions[form_num][next_q];
+        arr_forms_state[form_num][next_q] = 1;
+      }
+      else {
+        finish();
+      }
+
+
     }
+
+    //log data
+    // let curr_q = arr_forms_state[form_num].indexOf(1);
+
+    // //update state and show next question
+    // if (curr_q < num_questions_per_section-1) {
+    //     //update what's shown
+    //     form.innerHTML =  arr_forms_questions[form_num][curr_q+1];
+    //
+    //     //update state machine
+    //     arr_forms_state[form_num][curr_q] = 0;
+    //     // arr_forms_state[form_num][curr_q + 1] = 1;
+    // }
+    // else {
+    //   alert('end!');
+    //   //show thank you page and disappear
+    //   finish();
+    // }
 
   });
-});
-
-//log the data and send it somewhere
-//log which section type it is??
-
+}
+// });
 
 // HELPER FUNCTIONS
 function initialize() {
@@ -120,18 +180,23 @@ function getResponseOptions(formNum, index) {
 
   let curr_section = $(document.getElementsByClassName('page_section'))[formNum];
   let section_text = curr_section.firstChild.textContent;
-  // console.log(section_text.textContent);
 
   let response_div ='';
   if (response_styles[index].includes('radio')) {
     response_div += '<div class="btn-group" data-toggle="buttons">';
       let numRadios = parseInt(response_styles[index].substring(5));
       for (let i=0; i < numRadios; ++i) {
-        response_div += '<button class="btn btn-light btn-success" onclick="this.classList.toggle(\''+'btn-light'+'\');">' + i.toString() + '</button>';
+        response_div += '<button class="btn btn-light btn-success likert next" value="' + (i+1).toString() + '" onclick="this.classList.toggle(\''+'btn-light'+'\');">' + (i+1).toString() + '</button>';
       }
-      response_div += '</div><button class="btn btn-small next" type="submit" style="float:right">Next</button>'
+
+      //area for participants to ask additonal questions
+      // response_div += '<textarea class="form-control" rows="3"></textarea>';
+      // response_div += '</div><button class="btn btn-small next" type="submit" style="float:right">Next</button>'
   }
   else if (response_styles[index].includes('text')) {
+    if (response_styles[index].includes('Open')) {
+      section_text = 'What does...?'; //don't fill the textarea with text from the section
+    }
     response_div += '<textarea class="form-control" rows="3">"' + section_text + '"</textarea><button class="btn btn-small btn-light btn-success next" type="submit" style="float:right">Next</button>'
   }
   else {
@@ -144,10 +209,32 @@ function getResponseOptions(formNum, index) {
 function attachFeedbackPlaces() {
   var sections = document.getElementsByClassName('page_section');
   for (let s=0; s < sections.length; ++s) {
-    console.log(sections[s]);
-    // sections[s].innerHTML += '<div style="float:right">TEST</div>';
-    sections[s].innerHTML += '<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right" id="' + s.toString() + '"><div class="card-header">Give us your feedback!</div><div class="card-body">';
+    let parent = sections[s].parentElement;
+    console.log(parent);
+    let parent_location = parent.getBoundingClientRect();
+    let feedback_location_top = parent_location.top;
+    console.log(parent_location)
+    sections[s].parentElement.innerHTML += '<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right; top:' + feedback_location_top + '" id="' + s.toString() + '"><div class="card-header">Give us your feedback!</div><div class="card-body">';
   }
 }
 
-//// TODO: change to next question (show one at a time); colors for button
+function logData() {
+  console.log('log data');
+
+  // let form_response = {};
+  // let curr_section = $(document.getElementsByClassName('page_section'))[form_num];
+  // let section_text = curr_section.firstChild.textContent;
+  // form_response[section_text] = {}
+  // form_response[questions[curr_q]] = 'yes'
+  // responses[form_num] = form_response;
+  //
+  // console.log(responses);
+}
+
+function finish() {
+  //log the data and send it somewhere
+  //log which section type it is??
+
+  console.log('finished the form!');
+
+}
