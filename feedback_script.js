@@ -1,8 +1,8 @@
-var questions = [ "How well do you UNDERSTAND this text? (10 is best)",
+var questions = [ "How well do you UNDERSTAND this section? (10 is best)",
                   "Rewrite this section so that you find it EASIER to UNDERSTAND.",
-                  "How INTERESTING is this text to you? (10 is best)",
+                  "How INTERESTING is this section to you? (10 is best)",
                   "Rewrite this section to be the MOST INTERESTING to you.",
-                  "What questions do you have about this text?"];
+                  "What questions do you have about this section?"];
 
 var response_styles = [ "radio10", "text", "radio10", "text", "textOpen"];
 
@@ -23,11 +23,15 @@ var responses = {};
 // identify location of mouse then identify location of nearest text div
 // $(document).ready(function(){
 
+
+//EXTENSIVE FEEDBACK W LIKERT RATINGS & TEXT FEEDBACK
 function askFeedback() {
   console.log('hi')
 
   //initialize
   initialize();
+  populateQuestionsArray();
+
 
   //add places for feedback questions
   attachFeedbackPlaces();
@@ -112,28 +116,18 @@ function askFeedback() {
 
 
     }
-
-    //log data
-    // let curr_q = arr_forms_state[form_num].indexOf(1);
-
-    // //update state and show next question
-    // if (curr_q < num_questions_per_section-1) {
-    //     //update what's shown
-    //     form.innerHTML =  arr_forms_questions[form_num][curr_q+1];
-    //
-    //     //update state machine
-    //     arr_forms_state[form_num][curr_q] = 0;
-    //     // arr_forms_state[form_num][curr_q + 1] = 1;
-    // }
-    // else {
-    //   alert('end!');
-    //   //show thank you page and disappear
-    //   finish();
-    // }
-
   });
 }
 // });
+
+
+//THUMBS UP/DOWN & TEXT FEEDBACK
+function askVote() {
+
+  initialize();
+  attachVotePlaces();
+
+}
 
 // HELPER FUNCTIONS
 function initialize() {
@@ -153,9 +147,6 @@ function initialize() {
       arr_forms_state.push(arr);
       arr_forms_questions.push(arr.slice(0));
   }
-
-  populateQuestionsArray();
-
 }
 
 function populateQuestionsArray() {
@@ -188,10 +179,6 @@ function getResponseOptions(formNum, index) {
       for (let i=0; i < numRadios; ++i) {
         response_div += '<button class="btn btn-light btn-success likert next" value="' + (i+1).toString() + '" onclick="this.classList.toggle(\''+'btn-light'+'\');">' + (i+1).toString() + '</button>';
       }
-
-      //area for participants to ask additonal questions
-      // response_div += '<textarea class="form-control" rows="3"></textarea>';
-      // response_div += '</div><button class="btn btn-small next" type="submit" style="float:right">Next</button>'
   }
   else if (response_styles[index].includes('text')) {
     if (response_styles[index].includes('Open')) {
@@ -216,6 +203,20 @@ function attachFeedbackPlaces() {
     console.log(parent_location)
     sections[s].parentElement.innerHTML += '<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right; top:' + feedback_location_top + '" id="' + s.toString() + '"><div class="card-header">Give us your feedback!</div><div class="card-body">';
   }
+}
+
+function attachVotePlaces() {
+  console.log('here');
+  var sections = document.getElementsByClassName('page_section_thumbs');
+  console.log(sections);
+
+  for (let s=0; s < sections.length; ++s) {
+    let parent = sections[s].parentElement;
+    let parent_location = parent.getBoundingClientRect();
+    let feedback_location_top = parent_location.top + 10;
+    sections[s].parentElement.innerHTML ='<div class="vote" style="float:left;"><button type="button" class="btn btn-light btn-lg">👍</button><button type="button" class="btn btn-light btn-lg">👎</button></div>' + sections[s].parentElement.innerHTML;
+  }
+
 }
 
 function logData() {
