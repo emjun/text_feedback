@@ -29,27 +29,6 @@
       right:0;
       opacity: 0.90;
     }
-
-    .btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 15px;
-}
-    .glyphicon {
-  opacity: 1;
-  transition: opacity .25s ease-in-out;
-  -moz-transition: opacity .25s ease-in-out;
-  -webkit-transition: opacity .25s ease-in-out;
-}
-
-.glyphicon:hover {
-  opacity: 0.75;
-  cursor: pointer;
-}
   </style>
 </header>
 <body >
@@ -61,7 +40,7 @@
 
 
  <div class="container">
-   <button onclick="askFeedback()">Give feedback</button>
+   <button onclick="randomizeFeedback()">Give feedback</button>
    <button onclick="askVote()">Thumbs</button>
 
   <div id='acknowledgement'><p>Thank you for participating in the Thinking Style Test!</p></div>
@@ -90,5 +69,11 @@
   		<i class="glyphicon glyphicon-chevron-down"></i>
   		<a>NAME OF SECTION?</a>
   	</li>
+
+    <!-- <div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right; " id=""><div class="card-header"></div>
+    <div class="card-body">
+      <form><div class="form-group"><p>Improve this section.</p><textarea class="form-control" rows="3">SECTION TEXT</textarea><button class="btn btn-small btn-light btn-success next" type="submit" style="float:right">Next</button></div>
+      </form>
+      </div> -->
 </div>
 </body>

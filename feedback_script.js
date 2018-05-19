@@ -23,6 +23,18 @@ var responses = {};
 // identify location of mouse then identify location of nearest text div
 // $(document).ready(function(){
 
+//randomize which kind of feedback to ask for (EXTENSIVE vs. THUMBS)
+function randomizeFeedback() {
+  let choice = Math.floor(Math.random() * 2);
+
+  if (choice  === 0) {
+    askFeedback();
+  }
+  else {
+    askVote();
+  }
+}
+
 
 //EXTENSIVE FEEDBACK W LIKERT RATINGS & TEXT FEEDBACK
 function askFeedback() {
@@ -47,7 +59,6 @@ function askFeedback() {
   // EVENTS
   // add onClick event to move on to the next question for a form
   $('body').on('click', ".next", function (event){
-  // $(document.getElementsByClassName("next")).on('click', function(event) {
     event.preventDefault();
 
     let elt = $(event.target);
@@ -127,6 +138,124 @@ function askVote() {
   initialize();
   attachVotePlaces();
 
+  //handle THUMBS
+  $('body').on('click', ".thumbs", function (event){
+    event.preventDefault();
+
+    let elt = $(event.target);
+    let elt_parent = elt[0].parentElement;
+    console.log(elt_parent);
+    let elt_parent_location = elt_parent.getBoundingClientRect();
+    let card_top = elt_parent_location.top;
+    console.log(elt_parent);
+
+    //upvote
+    if (elt.attr('class').includes('thumbs_up')) {
+
+      console.log(elt);
+
+      let up = elt[0];
+      let down = elt_parent.children[1];
+
+      //change color
+      if(elt.attr('class').includes('btn-light')) {
+
+        up.classList.remove('btn-light');
+        up.classList.add('btn-success');
+
+        down.classList.remove('btn-success');
+        down.classList.add('btn-light');
+      }
+      else {
+        up.classList.remove('btn-success');
+        up.classList.add('btn-light');
+
+      }
+
+      // logVote();
+    }
+    //downvote
+    else {
+      // logVote(); // right away or wait until later?
+
+      let down = elt[0];
+      let up = elt_parent.children[0];
+      console.log(up);
+
+      //change color
+      if(elt.attr('class').includes('btn-light')) {
+
+        down.classList.remove('btn-light');
+        down.classList.add('btn-success');
+        
+        up.classList.remove('btn-success');
+        up.classList.add('btn-light');
+
+        //ask follow-up
+        elt_parent.parentElement.innerHTML +='<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right; top:' + card_top + '" id=""><div class="card-header"></div><div class="card-body"><form><div class="form-group"><p>How could we improve this section?</p><textarea class="form-control" rows="3"></textarea><button class="btn btn-small btn-light btn-success improved" type="submit" style="float:right">Thanks!</button></div></form></div>';
+        //logData();
+
+        //switch vote
+        // if (down.classList.contains('btn-success')) {
+        //   down.classList.remove('btn-success');
+        //   down.classList.add('btn-light');
+        // }
+      }
+      else {
+        down.classList.remove('btn-success');
+        down.classList.add('btn-light');
+      }
+
+      //logData();
+    }
+  });
+
+  //handle IMPROVED
+  $('body').on('click', ".improved", function(event) {
+    event.preventDefault();
+
+    let elt = $(event.target);
+    let form_group = elt[0].parentElement;
+    let form = form_group.parentElement;
+    let card_body = form.parentElement;
+    let card = card_body.parentElement;
+
+    //make card for improving section invisible
+    card.style.display = 'none';
+
+
+    // logData();
+  });
+
+}
+
+// Change vote by changing colors of the buttons
+function changeVote(parent, newVote, oldVote){
+  console.log(parent.children[0]);
+  console.log(newVote);
+  if(newVote.attr('class').includes('btn-light')) {
+    newVote.removeClass('btn-light').addClass('btn-success');
+    oldVote.removeClass('btn-success').addClass('btn-light');
+  }
+  else {
+    //change color of button
+    // elt.removeClass('btn-success').addClass('btn-light');
+
+    oldVote.removeClass('btn-light').addClass('btn-success');
+    newVote.removeClass('btn-success').addClass('btn-light');
+  }
+}
+
+function toggleVote(parent, index_newVote, index_oldVote) {
+
+  if(parent.children[index_newVote].attr('class').includes('btn-light')) {
+    parent.removeClass('btn-light').addClass('btn-success');
+  }
+  else {
+    //change color of button
+    elt.removeClass('btn-success').addClass('btn-light');
+  }
+
 }
 
 // HELPER FUNCTIONS
@@ -201,7 +330,7 @@ function attachFeedbackPlaces() {
     let parent_location = parent.getBoundingClientRect();
     let feedback_location_top = parent_location.top;
     console.log(parent_location)
-    sections[s].parentElement.innerHTML += '<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right; top:' + feedback_location_top + '" id="' + s.toString() + '"><div class="card-header">Give us your feedback!</div><div class="card-body">';
+    sections[s].parentElement.innerHTML += '<div class="card cardExtensive text-white bg-info mb-3" style="max-width: 25rem; float:right; top:' + feedback_location_top + '" id="' + s.toString() + '"><div class="card-header">Give us your feedback!</div><div class="card-body">';
   }
 }
 
@@ -214,7 +343,7 @@ function attachVotePlaces() {
     let parent = sections[s].parentElement;
     let parent_location = parent.getBoundingClientRect();
     let feedback_location_top = parent_location.top + 10;
-    sections[s].parentElement.innerHTML ='<div class="vote" style="float:left;"><button type="button" class="btn btn-light btn-lg">👍</button><button type="button" class="btn btn-light btn-lg">👎</button></div>' + sections[s].parentElement.innerHTML;
+    sections[s].parentElement.innerHTML ='<div class="thumbs" style="float:left;"><button type="button" class="btn btn-light btn-lg thumbs_up">👍</button><button type="button" class="btn btn-light btn-lg thumbs_down">👎</button></div>' + sections[s].parentElement.innerHTML;
   }
 
 }
