@@ -19,12 +19,16 @@ var arr_forms_questions = [];
 var responses = {};
 
 
-//randomize which kind of feedback to ask for (EXTENSIVE vs. THUMBS)
+function getFeedback() {
+window.setTimeout(randomizeFeedback, 7000);
+}
+
+//randomize which kind }of feedback to ask for (EXTENSIVE vs. THUMBS)
 function randomizeFeedback() {
   let choice = Math.floor(Math.random() * 2);
 
   if (choice  === 0) {
-    askFeedback();
+    window.setTimeout(askFeedback, 7000);
   }
   else {
     askVote();
@@ -133,6 +137,9 @@ function toggleVotePlaces() {
 
 //THUMBS UP/DOWN & TEXT FEEDBACK
 function askVote() {
+  // console.log('here');
+  // sleep(5000);
+  // console.log('after sleep');
 
   initialize();
   attachVotePlaces();
