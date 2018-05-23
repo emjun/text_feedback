@@ -11,7 +11,7 @@
   .page_section {
       width:auto;
       height:auto;
-      /* background:#CCFF33; */
+      /* background:#CCFF33; */ --
       padding:10px;
       position:relative;
     }
@@ -41,18 +41,33 @@
 
  <div class="container">
    <button onclick="randomizeFeedback()">Give feedback</button>
+   <button onclick="askFeedback()">Extensive feedback</button>
    <button onclick="askVote()">Thumbs</button>
 
   <div id='acknowledgement'><p>Thank you for participating in the Thinking Style Test!</p></div>
 
   <!-- // Research Purpose -->
-  <br><div id='research_purpose'><h2 class='bolded-blue'>What is the impact of this research?</h2>
-  <p class="page_section_thumbs">Having more fine grained data will help test previous research and inform the development of new theories on culture's impact on thinking style. Findings from this study could also help inform the way that files are organized on a computer and how software menus are designed on websites and other software.</p></div>
+  <br><div id='research_purpose'>
+    <!-- <div class="row"> -->
+    <!-- <div class="thumbs col-1" style="float:left;"><button type="button" class="btn btn-light btn-lg thumbs_up">👍</button><button type="button" class="btn btn-light btn-lg thumbs_down">👎</button> -->
+    <!-- </div> -->
+    <div class="row">
+    <div class="thumbs"></div>
+    <!--  ADDING COLUMNS SOMEHOW CREATES PROBLEMS W PLACEMENT OF EXTENSIVE FEEDBACK BOX-->
+    <div class= "thumbs_section"><h2 class='bolded-blue'>What is the impact of this research?</h2>
+      <p class="page_section">Having more fine grained data will help test previous research and inform the development of new theories on culture's impact on thinking style. Findings from this study could also help inform the way that files are organized on a computer and how software menus are designed on websites and other software.</p></div>
+    </div>
+    </div>
 
   <!-- // Research Background -->
-  <br><div id='research_background'><h2 class='bolded-blue'>What has previous research shown about this topic?</h2>
+  <br><div id='research_background'>
+    <div class="row">
+    <div class="thumbs"></div>
+    <div class="thumbs_section"><h2 class='bolded-blue'>What has previous research shown about this topic?</h2>
   <p class="page_section page_section_thumbs">Previous research in psychology suggests that cultural background affects the way people think [1]. There are two general ways of thinking: holistic or analytic. People who think holistically tend to group words based on their <emph>holistic function</emph> (i.e., Seagulls fly in the Sky). People who think analytically tend to group words based on <emph>analytic categories</emph> (i.e., Seagulls and Dogs are both animals). Holistic people also tend to group images based on more broadly shared <emph>thematic</emph> features (i.e., sharing a different feature with all other images) whereas analytic people tend to group images based on <emph>specific</emph> features (i.e., sharing one feature with all other images). People from Asia tend to think more holistically while people from Europe tend to think more analytically.</p>
-  <p>[1] Ji, L., Nisbett, R.E., & Zhang, Z. (2005).  Is it culture or is it language:  Examination of language effects in cross-cultural research on categorization.  Journal of Personality and Social Psychology, 87, 57-65.</p></div>
+  <p>[1] Ji, L., Nisbett, R.E., & Zhang, Z. (2005).  Is it culture or is it language:  Examination of language effects in cross-cultural research on categorization.  Journal of Personality and Social Psychology, 87, 57-65.</p>
+</div>
+</div>
 
   <!-- // Guiding Research Question or Hypothesis -->
   <br><div id='research_question'><h2 class='bolded-blue'>Why are we doing this research?</h2>
@@ -63,12 +78,12 @@
   <p class="page_section page_section_thumbs">We measured your thinking style based on your verbal and visual grouping patterns. The activity where you had to pick among three words helps us measure how your language background may affect the way you group concepts presented verbally with words. The other activity where you had to pick the best group for an image measured how you visually categorize objects. By detecting your verbal and visual grouping tendencies, we can have a more complete grasp of the way you represent and categorize concepts in your mind.</p></div>
 
 
-  <li class="list-group-item">
+  <!-- <li class="list-group-item">
   		<i class="glyphicon glyphicon-chevron-up" ></i>
   		<span class="label label-primary">8</span>
   		<i class="glyphicon glyphicon-chevron-down"></i>
   		<a>NAME OF SECTION?</a>
-  	</li>
+  	</li> -->
 
     <!-- <div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right; " id=""><div class="card-header"></div>
     <div class="card-body">
