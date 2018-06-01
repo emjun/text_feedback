@@ -300,6 +300,22 @@ function getResponseOptions(formNum, index) {
 }
 
 function attachFeedbackPlaces() {
+
+  let page_sections = document.getElementsByClassName('page_section');
+  let feedback_sections = document.getElementsByClassName('feedback_section');
+
+
+  for (let s=0; s < page_sections.length; ++s) {
+    // let parent = page_sections[s].parentElement;
+    // parent.innerHTML
+    page_sections[s].classList.add('col-10');
+  }
+
+  for (let t=0; t < feedback_sections.length; ++t) {
+    thumbs_sections[t].classList.add('col-5');
+    thumbs_sections[t].innerHTML += '<button type="button" class="btn btn-light btn-lg thumbs_up">👍</button><button type="button" class="btn btn-light btn-lg thumbs_down">👎</button>';
+  }
+
   var sections = document.getElementsByClassName('page_section');
   for (let s=0; s < sections.length; ++s) {
     let parent = sections[s].parentElement;
