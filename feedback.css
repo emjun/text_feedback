@@ -1,0 +1,10 @@
+.parentSectionForFeedback {
+  position: relative;
+}
+
+.feedbackBox {
+  position: absolute;
+  top: 0;
+  right: -500px;
+  width: 500px;
+}

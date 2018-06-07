@@ -1,8 +1,7 @@
-var questions = [ "How well do you UNDERSTAND this section? (10 is best)",                  "Explain this information to yourself.",
-                  // "Edit this section so that you find it EASIER to UNDERSTAND.",
+var questions = [ "How well do you UNDERSTAND this section? (10 is best)",
+                  "What questions do you have about this section?",
                   "How INTERESTING is this section to you? (10 is best)",
-                  "Edit this section to be the MOST INTERESTING to you.",
-                  "What questions do you have about this section?"];
+                  "Edit this section to be the MOST INTERESTING to you."];
 
 var response_styles = [ "radio10", "text", "radio10", "text", "textOpen"];
 
@@ -201,6 +200,7 @@ function askVote() {
         up.classList.add('btn-light');
 
         //ask follow-up
+        askFollowup();
         elt_parent.parentElement.innerHTML +='<div class="card text-white bg-info mb-3" style="max-width: 25rem; float:right; top:' + card_top + '" id=""><div class="card-header"></div><div class="card-body"><form><div class="form-group"><p>How could we improve this section?</p><textarea class="form-control" rows="3"></textarea><button class="btn btn-small btn-light btn-success improved" type="submit" style="float:right">Thanks!</button></div></form></div>';
 
         //logData();
@@ -232,6 +232,10 @@ function askVote() {
     // logData();
   });
 
+}
+
+function askFollowup() {
+  console.log('ask interesting && understand questions');
 }
 
 
@@ -308,7 +312,7 @@ function attachFeedbackPlaces() {
   for (let s=0; s < page_sections.length; ++s) {
     // let parent = page_sections[s].parentElement;
     // parent.innerHTML
-    page_sections[s].classList.add('col-10');
+    page_sections[s].classList.add('col-');
   }
 
   for (let t=0; t < feedback_sections.length; ++t) {
